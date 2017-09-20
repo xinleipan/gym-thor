@@ -1,7 +1,10 @@
 import gym
 import copy
-import sys, os, platform
-import robosims, json
+import sys
+import os
+import platform
+import robosims
+import json
 from gym import error, spaces, utils
 from gym.utils import seeding
 import numpy as np
@@ -10,7 +13,8 @@ from scipy import misc
 import pickle as pkl
 import networkx as nx
 import pdb
-
+import random
+ 
 class ThorEnv(gym.Env):
     metadata = {'render.modes': ['human']}
     num_env = 0
@@ -70,6 +74,18 @@ class ThorEnv(gym.Env):
         ''' set other parameters '''
         self.restart_once_done = True
         self.verbose = False
+
+    def randomize_env(self, seed):
+        random.seed(seed)
+        if self.visited is None or self.G is None:
+            sys.exit('please set your visited and G file!')
+        else:
+            num_nodes = len(self.visited.nodes)
+            random_number = random.randint(0, num_nodes-1)
+            self._reset()
+            new_start_node = list(self.visited.nodes[random_number].coord)
+            success = self.change_start_state(new_start_node)
+            return success
 
     def _step(self, act):
         if type(act) == type(1):
