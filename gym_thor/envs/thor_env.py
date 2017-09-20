@@ -41,7 +41,7 @@ class ThorEnv(gym.Env):
         if system_name.lower()[:5] == 'linux':
             self.envs = robosims.controller.ChallengeController(
                 unity_path=env_path+'thor-201705011400-Linux64',
-                x_display="1.0")
+                x_display="0.0")
         else:
             self.envs = robosims.controller.ChallengeController(
                 unity_path=env_path+'thor-201705011400-OSXIntel64.app/Contents/MacOS/thor-201705011400-OSXIntel64')
