@@ -66,7 +66,8 @@ class ThorEnv(gym.Env):
         ''' initialize observation '''
         self.envs.start()
         self.observation = self._reset()
-         
+        self.observation = self.observation.astype(np.float32)
+ 
         ''' agent state: start, target, current state '''
         self.agent_start_state = copy.deepcopy(self.agent_state)
         self.agent_target_state = list(self.get_target(self.target))
@@ -105,6 +106,7 @@ class ThorEnv(gym.Env):
         else:
             success = False
         self.observation = self.wrap(img)
+        self.observation = self.observation.astype(np.float32)
         self.agent_state = this_state
         return (self.observation, reward, done, success)
             
@@ -127,7 +129,8 @@ class ThorEnv(gym.Env):
             for act in actions[0]:
                 self.observation,_,_,_ = self._step(act) 
             if self.same_state(self.agent_state, self.agent_start_state) == False:
-                sys.exit('cannot reset!') 
+                sys.exit('cannot reset!')
+        self.observation = self.observation.astype(np.float32) 
         return self.observation
 
     def _render(self, mode='human', close=False):
@@ -189,6 +192,7 @@ class ThorEnv(gym.Env):
     def _jump_to_state(self, to_state):
         if self.visited is None or self.G is None:
             print('You cannot change state!')
+            self.observation = self.observation.astype(np.float32)
             return (self.observation, 0, False, False)
         else:
             current_st = self.get_agent_state()
@@ -198,11 +202,13 @@ class ThorEnv(gym.Env):
             to_name = self.visited.find_node(to_nd)
             if to_name == -1:
                 print('You cannot jump to an non-existant state!')
+                self.observation = self.observation.astype(np.float32)
                 return (self.observation, 0, False, False)
             else:
                 (_, actions) = find_all_path(self.G, self.visited, current_name, to_name)
                 for act in actions[0]:
                     self.observation, reward, done, success = self._step(act)
+                    self.observation = self.observation.astype(np.float32)
                 if self.same_state(self.agent_state, to_state) == False:
                     sys.exit('jump state fail!')
                 else:
