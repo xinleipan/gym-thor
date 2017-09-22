@@ -59,11 +59,13 @@ class ThorEnv(gym.Env):
         if visited_path is not None:
             self.visited = pkl.load(open(visited_path, 'rb'))
         else:
-            self.visited = None
+            visited_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),'visited_thor.pkl')
+            self.visited = pkl.load(open(visited_path, 'rb'))
         if G_path is not None:
             self.G = pkl.load(open(G_path, 'rb'))
         else:
-            self.G = None
+            G_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'G_thor.pkl')
+            self.G = pkl.load(open(G_path, 'rb'))
 
         ''' initialize observation '''
         self.envs.start()
