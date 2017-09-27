@@ -284,7 +284,7 @@ class Node(object):
     def __init__(self, coord, name=None, thre=0.01):
         self.coord = np.array(coord)
         self.thre = thre
-        if name == None:
+        if name is None:
             self.node_name = Node.count
             Node.count += 1
         else:

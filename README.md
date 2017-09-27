@@ -32,7 +32,11 @@ change directory into `gym-thor`, then
     
     import gym
     import gym_thor
+    import sys
     env = gym.make('thor-v0')
     path = 'relative/path/to/gym-thor/gym_thor/envs'
+    sys.path.append(path)
+    from thor_env import *
     env.start(path)
+
     
