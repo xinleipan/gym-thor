@@ -109,7 +109,7 @@ class ThorEnv(gym.Env):
         else:
             success = False
         if success == False:
-            reward = -1.0
+            reward = -10
         self.observation = self.wrap(img)
         self.agent_state = this_state
         return (self.observation, reward, done, success)
